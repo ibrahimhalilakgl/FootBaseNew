@@ -1,0 +1,98 @@
+import React, { useState } from 'react';
+import { Box, Card, CardContent, TextField, Button, Typography, Alert, Stack } from '@mui/material';
+import { useNavigate, Link } from 'react-router-dom';
+import { authAPI } from 'utils/api';
+import AuthService from 'utils/authService';
+
+const authService = new AuthService(authAPI);
+
+function RegisterPage() {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async () => {
+    if (!username.trim() || !email.trim() || !password.trim() || !confirm.trim()) {
+      setError('Tum alanlar zorunlu');
+      return;
+    }
+    if (password !== confirm) {
+      setError('Sifreler uyusmuyor');
+      return;
+    }
+    try {
+      setLoading(true);
+      setError(null);
+      await authService.register({
+        displayName: username.trim(),
+        email: email.trim(),
+        password: password.trim(),
+      });
+      navigate('/app');
+    } catch (e) {
+      let errorMessage = 'Kayit basarisiz. Lutfen tekrar deneyin.';
+
+      if (e.data && e.data.message) {
+        errorMessage = e.data.message;
+      } else if (e.message) {
+        errorMessage = e.message;
+      }
+
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Box display="flex" justifyContent="center" mt={6} px={2}>
+      <Card sx={{ maxWidth: 420, width: '100%' }}>
+        <CardContent>
+          <Typography variant="h5" gutterBottom>Kayit Ol</Typography>
+          <Stack spacing={2}>
+            {error && <Alert severity="error">{error}</Alert>}
+            <TextField
+              label="Kullanici adi"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              label="E-posta"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              label="Sifre"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              label="Sifre (tekrar)"
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              fullWidth
+            />
+            <Button variant="contained" onClick={handleSubmit} disabled={loading}>
+              {loading ? 'Gonderiliyor...' : 'Kayit Ol'}
+            </Button>
+            <Typography variant="body2">
+              Zaten hesabin var mi? <Link to="/login">Giris yap</Link>
+            </Typography>
+          </Stack>
+        </CardContent>
+      </Card>
+    </Box>
+  );
+}
+
+export default RegisterPage;
