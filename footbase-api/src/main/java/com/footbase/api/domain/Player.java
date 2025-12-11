@@ -30,6 +30,12 @@ public class Player {
     @Column(name = "forma_numarasi")
     private Integer shirtNumber;
 
+    @Column(name = "external_id")
+    private Long externalId;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Column(name = "olusturma_tarihi")
     private Instant createdAt;
 
@@ -38,4 +44,3 @@ public class Player {
         createdAt = Instant.now();
     }
 }
-

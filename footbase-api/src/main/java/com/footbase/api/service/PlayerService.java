@@ -50,6 +50,8 @@ public class PlayerService {
                 .shirtNumber(player.getShirtNumber())
                 .team(player.getTeam() != null ? player.getTeam().getName() : null)
                 .teamId(player.getTeam() != null ? player.getTeam().getId() : null)
+                .imageUrl(player.getImageUrl())
+                .externalId(player.getExternalId())
                 .averageRating(avgRating)
                 .ratingCount(ratingCount)
                 .build();
@@ -101,4 +103,3 @@ public class PlayerService {
         return user;
     }
 }
-

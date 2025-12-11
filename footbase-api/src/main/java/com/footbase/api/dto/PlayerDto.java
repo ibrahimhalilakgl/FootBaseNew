@@ -12,7 +12,8 @@ public class PlayerDto {
     private Integer shirtNumber;
     private String team;
     private Long teamId;
+    private String imageUrl;
+    private Long externalId;
     private Double averageRating;
     private Long ratingCount;
 }
-

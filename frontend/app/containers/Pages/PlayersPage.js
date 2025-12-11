@@ -10,6 +10,7 @@ import {
   Box,
   Rating,
   Chip,
+  Avatar,
 } from '@mui/material';
 import { playersAPI } from 'utils/api';
 import PapperBlock from 'dan-components/PapperBlock/PapperBlock';
@@ -66,12 +67,23 @@ function PlayersPage() {
             <Grid item xs={12} sm={6} md={4} key={player.id}>
               <Card>
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    {player.fullName}
-                  </Typography>
-                  {player.team && (
-                    <Chip label={player.team} size="small" color="primary" sx={{ mb: 1 }} />
-                  )}
+                  <Box display="flex" alignItems="center" mb={1.5}>
+                    <Avatar
+                      src={player.imageUrl || undefined}
+                      alt={player.fullName}
+                      sx={{ width: 56, height: 56, mr: 1.5 }}
+                    >
+                      {player.fullName ? player.fullName.charAt(0) : '?'}
+                    </Avatar>
+                    <Box>
+                      <Typography variant="h6" gutterBottom>
+                        {player.fullName}
+                      </Typography>
+                      {player.team && (
+                        <Chip label={player.team} size="small" color="primary" sx={{ mb: 1 }} />
+                      )}
+                    </Box>
+                  </Box>
                   {player.position && (
                     <Typography variant="body2" color="textSecondary" gutterBottom>
                       Pozisyon: {player.position}
