@@ -5,6 +5,8 @@ import com.footbase.api.domain.MatchFixture;
 import com.footbase.api.dto.HomePageDto;
 import com.footbase.api.repository.MatchCommentRepository;
 import com.footbase.api.repository.MatchRepository;
+import com.footbase.api.repository.PlayerRepository;
+import com.footbase.api.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,8 @@ public class HomeService {
 
     private final MatchRepository matchRepository;
     private final MatchCommentRepository matchCommentRepository;
+    private final PlayerRepository playerRepository;
+    private final TeamRepository teamRepository;
 
     @Transactional(readOnly = true)
     public HomePageDto getHome() {
@@ -32,6 +36,8 @@ public class HomeService {
         return HomePageDto.builder()
                 .upcomingMatches(upcoming.stream().map(this::toMatchDto).collect(Collectors.toList()))
                 .comments(topComments.stream().map(this::toCommentDto).collect(Collectors.toList()))
+                .playerCount(playerRepository.count())
+                .teamCount(teamRepository.count())
                 .build();
     }
 

@@ -11,6 +11,7 @@ import {
   Rating,
   Chip,
   Avatar,
+  Pagination,
 } from '@mui/material';
 import { playersAPI } from 'utils/api';
 import PapperBlock from 'dan-components/PapperBlock/PapperBlock';
@@ -19,6 +20,8 @@ function PlayersPage() {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 50;
 
   useEffect(() => {
     loadPlayers();
@@ -41,6 +44,12 @@ function PlayersPage() {
     (player.team && player.team.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  const pageCount = Math.ceil(filteredPlayers.length / PAGE_SIZE);
+  const paginatedPlayers = filteredPlayers.slice(
+    (page - 1) * PAGE_SIZE,
+    page * PAGE_SIZE,
+  );
+
   if (loading) {
     return (
       <Container>
@@ -58,12 +67,15 @@ function PlayersPage() {
             label="Oyuncu Ara"
             variant="outlined"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setPage(1);
+            }}
             placeholder="Oyuncu veya takım adı ile ara..."
           />
         </Box>
         <Grid container spacing={3}>
-          {filteredPlayers.map((player) => (
+          {paginatedPlayers.map((player) => (
             <Grid item xs={12} sm={6} md={4} key={player.id}>
               <Card>
                 <CardContent>
@@ -125,6 +137,20 @@ function PlayersPage() {
             <Typography variant="h6" color="textSecondary">
               Oyuncu bulunamadı
             </Typography>
+          </Box>
+        )}
+        {filteredPlayers.length > 0 && (
+          <Box display="flex" justifyContent="center" mt={4}>
+            <Pagination
+              count={pageCount}
+              page={page}
+              onChange={(_, value) => setPage(value)}
+              color="primary"
+              showFirstButton
+              showLastButton
+              siblingCount={1}
+              boundaryCount={1}
+            />
           </Box>
         )}
       </PapperBlock>

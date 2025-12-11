@@ -15,6 +15,8 @@ import java.util.List;
 public class HomePageDto {
     private List<SimpleMatchDto> upcomingMatches;
     private List<SimpleCommentDto> comments;
+    private Long playerCount;
+    private Long teamCount;
 
     @Data
     @Builder

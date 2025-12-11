@@ -14,7 +14,8 @@ import rootReducer from './reducers';
 const persistConfig = {
   key: 'dandelion',
   storage,
-  whitelist: []
+  // UI durumunu (tema, düzen, yön) sayfa yenilemesinde koru
+  whitelist: ['ui']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
