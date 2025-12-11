@@ -20,5 +20,22 @@ public class Team {
 
     @Column(name = "kod", nullable = false, unique = true, length = 10)
     private String code;
-}
 
+    @Column(name = "short_name", length = 50)
+    private String shortName;
+
+    @Column(name = "logo_url")
+    private String logoUrl;
+
+    @Column(name = "external_id")
+    private Long externalId;
+
+    @Column(name = "sehir", length = 120)
+    private String city;
+
+    @Column(name = "stadyum", length = 150)
+    private String stadium;
+
+    @Column(name = "lig", length = 120)
+    private String league;
+}

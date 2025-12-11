@@ -109,7 +109,11 @@ public class MatchService {
                 .orElseThrow(() -> new NotFoundException("Yorum bulunamadi"));
         UserAccount user = requireUser();
 
-        if (!comment.getUser().getId().equals(user.getId())) {
+        boolean isOwner = comment.getUser().getId().equals(user.getId());
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isOwner && !isAdmin) {
             throw new IllegalStateException("Bu yorumu silme yetkiniz yok");
         }
 
@@ -159,6 +163,10 @@ public class MatchService {
                 .kickoffAt(match.getKickoffAt())
                 .venue(match.getVenue())
                 .status(match.getStatus())
+                .homeScore(match.getHomeScore())
+                .awayScore(match.getAwayScore())
+                .homeTeamLogo(match.getHomeTeam() != null ? match.getHomeTeam().getLogoUrl() : null)
+                .awayTeamLogo(match.getAwayTeam() != null ? match.getAwayTeam().getLogoUrl() : null)
                 .userPrediction(userPrediction)
                 .comments(comments)
                 .build();

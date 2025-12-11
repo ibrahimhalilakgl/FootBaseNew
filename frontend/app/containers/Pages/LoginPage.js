@@ -15,7 +15,7 @@ function LoginPage() {
 
   const handleSubmit = async () => {
     if (!email.trim() || !password.trim()) {
-      setError('E-posta ve sifre gereklidir');
+      setError('E-posta ve şifre gereklidir.');
       return;
     }
     try {
@@ -27,7 +27,7 @@ function LoginPage() {
       const message =
         (e.data && e.data.message) ||
         e.message ||
-        'Giris basarisiz. Bilgilerinizi kontrol edin.';
+        'Giriş başarısız. Bilgilerinizi kontrol edin.';
       setError(message);
     } finally {
       setLoading(false);
@@ -38,7 +38,7 @@ function LoginPage() {
     <Box display="flex" justifyContent="center" mt={6} px={2}>
       <Card sx={{ maxWidth: 420, width: '100%' }}>
         <CardContent>
-          <Typography variant="h5" gutterBottom>Giris Yap</Typography>
+          <Typography variant="h5" gutterBottom>Giriş Yap</Typography>
           <Stack spacing={2}>
             {error && <Alert severity="error">{error}</Alert>}
             <TextField
@@ -49,17 +49,17 @@ function LoginPage() {
               fullWidth
             />
             <TextField
-              label="Sifre"
+              label="Şifre"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               fullWidth
             />
             <Button variant="contained" onClick={handleSubmit} disabled={loading}>
-              {loading ? 'Gonderiliyor...' : 'Giris Yap'}
+              {loading ? 'Gönderiliyor...' : 'Giriş Yap'}
             </Button>
             <Typography variant="body2">
-              Hesabin yok mu? <Link to="/register">Kayit ol</Link>
+              Hesabın yok mu? <Link to="/register">Kayıt ol</Link>
             </Typography>
           </Stack>
         </CardContent>

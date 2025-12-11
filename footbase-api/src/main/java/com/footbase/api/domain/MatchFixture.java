@@ -34,11 +34,16 @@ public class MatchFixture {
     @Column(name = "durum", length = 40)
     private String status;
 
+    @Column(name = "ev_sahibi_skor")
+    private Integer homeScore;
+
+    @Column(name = "deplasman_skor")
+    private Integer awayScore;
+
     @PrePersist
     public void onCreate() {
         if (status == null) {
-            status = "SCHEDULED";
+            status = "PLANLI";
         }
     }
 }
-

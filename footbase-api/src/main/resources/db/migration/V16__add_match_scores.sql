@@ -1,0 +1,3 @@
+ALTER TABLE maclar
+    ADD COLUMN IF NOT EXISTS ev_sahibi_skor INTEGER,
+    ADD COLUMN IF NOT EXISTS deplasman_skor INTEGER;

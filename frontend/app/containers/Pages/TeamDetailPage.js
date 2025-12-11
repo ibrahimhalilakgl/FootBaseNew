@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Box, Card, CardContent, CircularProgress, Typography, Alert, Stack } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  CircularProgress,
+  Typography,
+  Alert,
+  Stack,
+  Avatar,
+  Chip,
+} from '@mui/material';
 import { teamsAPI } from 'utils/api';
 
 function TeamDetailPage() {
@@ -49,9 +59,23 @@ function TeamDetailPage() {
       </Typography>
       <Card variant="outlined">
         <CardContent>
-          <Stack spacing={1}>
-            <Typography variant="h6">{data.name || data.ad || 'Takım'}</Typography>
-            <Typography color="text.secondary">Kod: {data.code || data.kod || '-'}</Typography>
+          <Stack spacing={2}>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Avatar
+                src={data.logoUrl || data.logo_url || undefined}
+                alt={data.name || data.shortName || data.code || 'Takım'}
+                sx={{ width: 72, height: 72, bgcolor: 'primary.main' }}
+              >
+                {(data.code || data.shortName || data.name || '?').substring(0, 2).toUpperCase()}
+              </Avatar>
+              <Box>
+                <Typography variant="h6">{data.name || data.ad || 'Takım'}</Typography>
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <Chip label={`Kod: ${data.code || data.kod || '-'}`} size="small" />
+                  {data.shortName && <Chip label={data.shortName} size="small" variant="outlined" />}
+                </Stack>
+              </Box>
+            </Stack>
             <Typography color="text.secondary">Lig: {data.league || data.lig || '-'}</Typography>
             <Typography color="text.secondary">Şehir: {data.city || data.sehir || '-'}</Typography>
             <Typography color="text.secondary">Stadyum: {data.stadium || data.stadyum || '-'}</Typography>
@@ -66,4 +90,3 @@ function TeamDetailPage() {
 }
 
 export default TeamDetailPage;
-

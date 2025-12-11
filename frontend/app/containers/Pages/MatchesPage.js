@@ -12,6 +12,7 @@ import {
   Stack,
   Divider,
   Paper,
+  Avatar,
 } from '@mui/material';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -134,17 +135,31 @@ function MatchesPage() {
                   <CardContent>
                     <Stack spacing={1.5}>
                       <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between">
-                        <Stack direction="row" spacing={1} alignItems="center">
-                          <SportsSoccerIcon fontSize="small" />
-                          <Typography variant="h6" fontWeight="bold">
-                            {match.homeTeam || 'Bilinmiyor'} vs {match.awayTeam || 'Bilinmiyor'}
-                          </Typography>
-                        </Stack>
-                        <Chip
-                          label={match.status || 'PLANLI'}
-                          color={['FINISHED', 'BITTI'].includes((match.status || '').toUpperCase()) ? 'success' : 'default'}
-                          size="small"
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <SportsSoccerIcon fontSize="small" />
+                        <Typography variant="h6" fontWeight="bold">
+                          {match.homeTeam || 'Bilinmiyor'} vs {match.awayTeam || 'Bilinmiyor'}
+                        </Typography>
+                      </Stack>
+                      <Chip
+                        label={match.status || 'PLANLI'}
+                        color={['FINISHED', 'BITTI'].includes((match.status || '').toUpperCase()) ? 'success' : 'default'}
+                        size="small"
                         />
+                      </Stack>
+
+                      <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
+                        <Stack direction="row" spacing={1} alignItems="center">
+                          <Avatar src={match.homeTeamLogo || undefined} alt={match.homeTeam || 'Ev sahibi'} />
+                          <Typography variant="subtitle1">{match.homeTeam || '-'}</Typography>
+                        </Stack>
+                        <Typography variant="h6" fontWeight="bold">
+                          {match.homeScore != null ? match.homeScore : '-'} - {match.awayScore != null ? match.awayScore : '-'}
+                        </Typography>
+                        <Stack direction="row" spacing={1} alignItems="center">
+                          <Typography variant="subtitle1">{match.awayTeam || '-'}</Typography>
+                          <Avatar src={match.awayTeamLogo || undefined} alt={match.awayTeam || 'Deplasman'} />
+                        </Stack>
                       </Stack>
 
                       <Stack direction="row" spacing={2} alignItems="center" color="text.secondary">

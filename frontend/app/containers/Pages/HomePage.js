@@ -10,11 +10,13 @@ import Divider from '@mui/material/Divider';
 import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
 import { homeAPI } from 'utils/api';
 
 function HomePage() {
-  const [players, setPlayers] = useState([]);
-  const [matches, setMatches] = useState([]);
+  const [upcomingMatches, setUpcomingMatches] = useState([]);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,8 +27,7 @@ function HomePage() {
       try {
         const data = await homeAPI.get();
         if (!mounted) return;
-        setPlayers(data.players || []);
-        setMatches(data.matches || []);
+        setUpcomingMatches(data.upcomingMatches || data.matches || []);
         setComments(data.comments || []);
       } catch (err) {
         if (mounted) setError('Veri yüklenemedi. Lütfen tekrar deneyin.');
@@ -73,62 +74,21 @@ function HomePage() {
         Ana Sayfa
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
-          {section(
-            'Son Eklenen Oyuncular',
-            <List dense>
-              {players.map((p) => (
-                <React.Fragment key={p.id}>
-                  <ListItem>
-                    <ListItemText
-                      primary={p.fullName || p.name}
-                      secondary={`ID: ${p.id}${p.position ? ` • ${p.position}` : ''}`}
-                    />
-                  </ListItem>
-                  <Divider component="li" />
-                </React.Fragment>
-              ))}
-              {players.length === 0 && (
-                <ListItem>
-                  <ListItemText primary="Oyuncu bulunamadı" />
-                </ListItem>
-              )}
-            </List>,
-          )}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          {section(
-            'Son Eklenen Maçlar',
-            <List dense>
-              {matches.map((m) => (
-                <React.Fragment key={m.id}>
-                  <ListItem>
-                    <ListItemText
-                      primary={`${m.homeTeam || '-'} vs ${m.awayTeam || '-'}`}
-                      secondary={`ID: ${m.id}${m.status ? ` • ${m.status}` : ''}`}
-                    />
-                  </ListItem>
-                  <Divider component="li" />
-                </React.Fragment>
-              ))}
-              {matches.length === 0 && (
-                <ListItem>
-                  <ListItemText primary="Maç bulunamadı" />
-                </ListItem>
-              )}
-            </List>,
-          )}
-        </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={6}>
           {section(
             'Son Yorumlar',
             <List dense>
               {comments.map((c, idx) => (
                 <React.Fragment key={`${c.id || idx}`}>
-                  <ListItem>
+                  <ListItem alignItems="flex-start">
                     <ListItemText
                       primary={c.message || 'Yeni yorum'}
-                      secondary={`ID: ${c.id || '-'}${c.author ? ` • ${c.author}` : ''}${c.createdAt ? ` • ${new Date(c.createdAt).toLocaleString('tr-TR')}` : ''}`}
+                      secondary={[
+                        c.author,
+                        c.createdAt ? new Date(c.createdAt).toLocaleString('tr-TR') : null,
+                      ]
+                        .filter(Boolean)
+                        .join(' • ')}
                     />
                   </ListItem>
                   <Divider component="li" />
@@ -136,10 +96,47 @@ function HomePage() {
               ))}
               {comments.length === 0 && (
                 <ListItem>
-                  <ListItemText primary="Aktivite bulunamadı" />
+                  <ListItemText primary="Henüz yorum yok." />
                 </ListItem>
               )}
             </List>,
+          )}
+        </Grid>
+        <Grid item xs={12} md={6}>
+          {section(
+            'Yaklaşan Maçlar',
+            <Stack spacing={2}>
+              {upcomingMatches.map((m) => (
+                <Card key={m.id} variant="outlined">
+                  <CardContent>
+                    <Stack spacing={1.5}>
+                      <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
+                        <Stack direction="row" spacing={1.5} alignItems="center">
+                          <Avatar src={m.homeTeamLogo || undefined} alt={m.homeTeam || 'Ev sahibi'} />
+                          <Typography variant="subtitle1" fontWeight="bold">{m.homeTeam || '-'}</Typography>
+                        </Stack>
+                        <Typography variant="h6" fontWeight="bold">
+                          {m.homeScore != null ? m.homeScore : '-'} - {m.awayScore != null ? m.awayScore : '-'}
+                        </Typography>
+                        <Stack direction="row" spacing={1.5} alignItems="center">
+                          <Typography variant="subtitle1" fontWeight="bold">{m.awayTeam || '-'}</Typography>
+                          <Avatar src={m.awayTeamLogo || undefined} alt={m.awayTeam || 'Deplasman'} />
+                        </Stack>
+                      </Stack>
+                      <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between">
+                        <Typography color="text.secondary">
+                          {m.kickoffAt ? new Date(m.kickoffAt).toLocaleString('tr-TR') : 'Tarih bekleniyor'}
+                        </Typography>
+                        <Chip label={m.status || 'PLANLI'} size="small" />
+                      </Stack>
+                    </Stack>
+                  </CardContent>
+                </Card>
+              ))}
+              {upcomingMatches.length === 0 && (
+                <Typography color="text.secondary">Planlanan maç bulunamadı.</Typography>
+              )}
+            </Stack>,
           )}
         </Grid>
       </Grid>
@@ -148,4 +145,3 @@ function HomePage() {
 }
 
 export default HomePage;
-

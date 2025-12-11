@@ -35,7 +35,9 @@ public class AdminService {
                 .awayTeam(awayTeam)
                 .kickoffAt(request.getKickoffAt())
                 .venue(request.getVenue())
-                .status(request.getStatus() != null ? request.getStatus() : "SCHEDULED")
+                .status(request.getStatus() != null ? request.getStatus() : "PLANLI")
+                .homeScore(request.getHomeScore())
+                .awayScore(request.getAwayScore())
                 .build();
 
         MatchFixture saved = matchRepository.save(match);
@@ -71,6 +73,13 @@ public class AdminService {
 
         if (request.getStatus() != null) {
             match.setStatus(request.getStatus());
+        }
+
+        if (request.getHomeScore() != null) {
+            match.setHomeScore(request.getHomeScore());
+        }
+        if (request.getAwayScore() != null) {
+            match.setAwayScore(request.getAwayScore());
         }
 
         MatchFixture saved = matchRepository.save(match);
@@ -170,6 +179,10 @@ public class AdminService {
                 .kickoffAt(match.getKickoffAt())
                 .venue(match.getVenue())
                 .status(match.getStatus())
+                .homeScore(match.getHomeScore())
+                .awayScore(match.getAwayScore())
+                .homeTeamLogo(match.getHomeTeam() != null ? match.getHomeTeam().getLogoUrl() : null)
+                .awayTeamLogo(match.getAwayTeam() != null ? match.getAwayTeam().getLogoUrl() : null)
                 .build();
     }
 
@@ -185,4 +198,3 @@ public class AdminService {
         }
     }
 }
-

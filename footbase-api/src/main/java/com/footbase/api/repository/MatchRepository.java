@@ -24,6 +24,6 @@ public interface MatchRepository extends JpaRepository<MatchFixture, Long> {
     
     List<MatchFixture> findByHomeTeamOrAwayTeam(Team homeTeam, Team awayTeam);
     List<MatchFixture> findByStatus(String status);
-    List<MatchFixture> findTop3ByOrderByIdDesc();
+    List<MatchFixture> findTop3ByKickoffAtAfterOrderByKickoffAtAsc(Instant now);
+    List<MatchFixture> findTop3ByOrderByKickoffAtAsc();
 }
-

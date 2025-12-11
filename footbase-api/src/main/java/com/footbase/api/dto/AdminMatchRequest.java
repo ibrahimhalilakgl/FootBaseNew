@@ -19,5 +19,7 @@ public class AdminMatchRequest {
     private String venue;
     
     private String status;
-}
 
+    private Integer homeScore;
+    private Integer awayScore;
+}

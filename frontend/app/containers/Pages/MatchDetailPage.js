@@ -13,9 +13,11 @@ import {
   Button,
   IconButton,
   Tooltip,
+  Avatar,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { matchesAPI } from 'utils/api';
 
 function MatchDetailPage() {
@@ -112,10 +114,23 @@ function MatchDetailPage() {
       </Typography>
       <Card variant="outlined">
         <CardContent>
-          <Stack spacing={1}>
-            <Typography variant="h6">
-              {data.homeTeam || '-'} vs {data.awayTeam || '-'}
-            </Typography>
+          <Stack spacing={2}>
+            <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Avatar src={data.homeTeamLogo || undefined} alt={data.homeTeam || 'Ev sahibi'} />
+                <Typography variant="h6" fontWeight="bold">{data.homeTeam || '-'}</Typography>
+              </Stack>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <SportsSoccerIcon color="primary" />
+                <Typography variant="h5" fontWeight="bold">
+                  {data.homeScore != null ? data.homeScore : '-'} - {data.awayScore != null ? data.awayScore : '-'}
+                </Typography>
+              </Stack>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="h6" fontWeight="bold">{data.awayTeam || '-'}</Typography>
+                <Avatar src={data.awayTeamLogo || undefined} alt={data.awayTeam || 'Deplasman'} />
+              </Stack>
+            </Stack>
             <Typography color="text.secondary">Durum: {data.status || '-'}</Typography>
             <Typography color="text.secondary">
               Başlama: {data.kickoffAt ? new Date(data.kickoffAt).toLocaleString('tr-TR') : '-'}

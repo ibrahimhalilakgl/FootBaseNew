@@ -148,7 +148,7 @@ function HeaderMenu(props) {
                     </IconButton>
                   </Tooltip>
                 )}
-                <Tooltip title="Karanlık/Aydınlık Mod" placement="bottom">
+                <Tooltip title="Koyu/Açık Mod" placement="bottom">
                   <IconButton className={classes.button} onClick={() => turnMode(mode)} size="large">
                     <i className="ion-ios-bulb-outline" />
                   </IconButton>

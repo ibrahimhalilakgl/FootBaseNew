@@ -132,19 +132,19 @@ function Header(props) {
           <div className={classes.headerProperties}>
             <div className={cx(classes.headerAction, showTitle && classes.fadeOut)}>
               {fullScreen ? (
-                <Tooltip title="Exit Full Screen" placement="bottom">
+                <Tooltip title="Tam Ekrandan Çık" placement="bottom">
                   <IconButton className={classes.button} onClick={closeFullScreen} size="large">
                     <i className="ion-ios-qr-scanner-outline" />
                   </IconButton>
                 </Tooltip>
               ) : (
-                <Tooltip title="Full Screen" placement="bottom">
+                <Tooltip title="Tam Ekran" placement="bottom">
                   <IconButton className={classes.button} onClick={openFullScreen} size="large">
                     <i className="ion-ios-qr-scanner-outline" />
                   </IconButton>
                 </Tooltip>
               )}
-              <Tooltip title="Turn Dark/Light" placement="bottom">
+              <Tooltip title="Koyu/Açık Mod" placement="bottom">
                 <IconButton className={classes.button} onClick={() => turnMode(mode)} size="large">
                   <i className="ion-ios-bulb-outline" />
                 </IconButton>

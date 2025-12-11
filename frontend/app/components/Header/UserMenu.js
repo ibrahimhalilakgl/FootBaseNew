@@ -21,7 +21,7 @@ function UserMenu() {
   if (isAuthed) {
     return (
       <Stack direction="row" spacing={1} alignItems="center">
-        <Button variant="outlined" size="small" onClick={handleLogout}>
+        <Button variant="outlined" color="primary" size="small" onClick={handleLogout}>
           Çıkış Yap
         </Button>
       </Stack>
@@ -30,10 +30,10 @@ function UserMenu() {
 
   return (
     <Stack direction="row" spacing={1}>
-      <Button component={Link} to="/login" variant="outlined" size="small">
+      <Button component={Link} to="/login" variant="contained" color="primary" size="medium">
         Giriş Yap
       </Button>
-      <Button component={Link} to="/register" variant="contained" size="small">
+      <Button component={Link} to="/register" variant="outlined" color="primary" size="medium">
         Kayıt Ol
       </Button>
     </Stack>

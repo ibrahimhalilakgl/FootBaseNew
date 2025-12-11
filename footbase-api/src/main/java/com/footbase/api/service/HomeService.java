@@ -2,15 +2,14 @@ package com.footbase.api.service;
 
 import com.footbase.api.domain.MatchComment;
 import com.footbase.api.domain.MatchFixture;
-import com.footbase.api.domain.Player;
 import com.footbase.api.dto.HomePageDto;
 import com.footbase.api.repository.MatchCommentRepository;
 import com.footbase.api.repository.MatchRepository;
-import com.footbase.api.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,29 +17,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HomeService {
 
-    private final PlayerRepository playerRepository;
     private final MatchRepository matchRepository;
     private final MatchCommentRepository matchCommentRepository;
 
     @Transactional(readOnly = true)
     public HomePageDto getHome() {
-        List<Player> topPlayers = playerRepository.findTop3ByOrderByIdDesc();
-        List<MatchFixture> topMatches = matchRepository.findTop3ByOrderByIdDesc();
+        Instant now = Instant.now();
+        List<MatchFixture> upcoming = matchRepository.findTop3ByKickoffAtAfterOrderByKickoffAtAsc(now);
+        if (upcoming.isEmpty()) {
+            upcoming = matchRepository.findTop3ByOrderByKickoffAtAsc();
+        }
         List<MatchComment> topComments = matchCommentRepository.findTop3ByOrderByIdDesc();
 
         return HomePageDto.builder()
-                .players(topPlayers.stream().map(this::toPlayerDto).collect(Collectors.toList()))
-                .matches(topMatches.stream().map(this::toMatchDto).collect(Collectors.toList()))
+                .upcomingMatches(upcoming.stream().map(this::toMatchDto).collect(Collectors.toList()))
                 .comments(topComments.stream().map(this::toCommentDto).collect(Collectors.toList()))
-                .build();
-    }
-
-    private HomePageDto.SimplePlayerDto toPlayerDto(Player p) {
-        return HomePageDto.SimplePlayerDto.builder()
-                .id(p.getId())
-                .fullName(p.getFullName())
-                .position(p.getPosition())
-                .team(p.getTeam() != null ? p.getTeam().getName() : null)
                 .build();
     }
 
@@ -49,6 +40,10 @@ public class HomeService {
                 .id(m.getId())
                 .homeTeam(m.getHomeTeam() != null ? m.getHomeTeam().getName() : null)
                 .awayTeam(m.getAwayTeam() != null ? m.getAwayTeam().getName() : null)
+                .homeTeamLogo(m.getHomeTeam() != null ? m.getHomeTeam().getLogoUrl() : null)
+                .awayTeamLogo(m.getAwayTeam() != null ? m.getAwayTeam().getLogoUrl() : null)
+                .homeScore(m.getHomeScore())
+                .awayScore(m.getAwayScore())
                 .status(m.getStatus())
                 .kickoffAt(m.getKickoffAt())
                 .build();
@@ -64,4 +59,3 @@ public class HomeService {
                 .build();
     }
 }
-

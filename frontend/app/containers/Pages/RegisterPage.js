@@ -17,11 +17,11 @@ function RegisterPage() {
 
   const handleSubmit = async () => {
     if (!username.trim() || !email.trim() || !password.trim() || !confirm.trim()) {
-      setError('Tum alanlar zorunlu');
+      setError('Tüm alanlar zorunludur.');
       return;
     }
     if (password !== confirm) {
-      setError('Sifreler uyusmuyor');
+      setError('Şifreler uyuşmuyor.');
       return;
     }
     try {
@@ -34,7 +34,7 @@ function RegisterPage() {
       });
       navigate('/app');
     } catch (e) {
-      let errorMessage = 'Kayit basarisiz. Lutfen tekrar deneyin.';
+      let errorMessage = 'Kayıt başarısız. Lütfen tekrar deneyin.';
 
       if (e.data && e.data.message) {
         errorMessage = e.data.message;
@@ -52,11 +52,11 @@ function RegisterPage() {
     <Box display="flex" justifyContent="center" mt={6} px={2}>
       <Card sx={{ maxWidth: 420, width: '100%' }}>
         <CardContent>
-          <Typography variant="h5" gutterBottom>Kayit Ol</Typography>
+          <Typography variant="h5" gutterBottom>Kayıt Ol</Typography>
           <Stack spacing={2}>
             {error && <Alert severity="error">{error}</Alert>}
             <TextField
-              label="Kullanici adi"
+              label="Kullanıcı adı"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               fullWidth
@@ -69,24 +69,24 @@ function RegisterPage() {
               fullWidth
             />
             <TextField
-              label="Sifre"
+              label="Şifre"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               fullWidth
             />
             <TextField
-              label="Sifre (tekrar)"
+              label="Şifre (tekrar)"
               type="password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               fullWidth
             />
             <Button variant="contained" onClick={handleSubmit} disabled={loading}>
-              {loading ? 'Gonderiliyor...' : 'Kayit Ol'}
+              {loading ? 'Gönderiliyor...' : 'Kayıt Ol'}
             </Button>
             <Typography variant="body2">
-              Zaten hesabin var mi? <Link to="/login">Giris yap</Link>
+              Zaten hesabın var mı? <Link to="/login">Giriş yap</Link>
             </Typography>
           </Stack>
         </CardContent>
