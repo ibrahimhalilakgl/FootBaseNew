@@ -1,4 +1,3 @@
--- Temel Süper Lig takımları için şehir, stadyum, lig bilgisi
 UPDATE takimlar SET sehir = 'İstanbul', stadyum = 'RAMS Park', lig = 'Süper Lig'
 WHERE kod = 'GS';
 
@@ -23,6 +22,5 @@ WHERE kod = 'ANT';
 UPDATE takimlar SET sehir = 'İzmir', stadyum = 'Bornova Aziz Kocaoğlu Stadyumu', lig = 'Süper Lig'
 WHERE kod = 'GÖZ' OR short_name = 'GÖZ';
 
--- Eğer lig bilgisi boşsa ve kod/short_name biliniyorsa Süper Lig olarak işaretle
 UPDATE takimlar SET lig = 'Süper Lig'
 WHERE lig IS NULL AND kod IN ('GS','FB','BJK','TS','BAS','ADS','ANT','GÖZ');

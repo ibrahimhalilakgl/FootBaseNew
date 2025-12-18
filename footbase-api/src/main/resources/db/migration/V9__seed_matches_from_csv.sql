@@ -1,7 +1,4 @@
--- Seed matches into maclar (Turkish table used by entities)
--- Columns: id;aciklama;deplasman_skor;ev_sahibi_skor;saat;tarih;yer;deplasman_id;ev_sahibi_id
 
--- Ensure base teams exist for FK
 INSERT INTO takimlar (id, ad, kod)
 VALUES
     (1, 'Fenerbahçe', 'FEN'),

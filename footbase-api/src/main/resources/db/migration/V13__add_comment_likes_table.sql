@@ -1,4 +1,3 @@
--- comment_likes tablosu (eski şema uyumu için)
 CREATE TABLE IF NOT EXISTS comment_likes (
     id BIGSERIAL PRIMARY KEY,
     comment_id BIGINT NOT NULL,

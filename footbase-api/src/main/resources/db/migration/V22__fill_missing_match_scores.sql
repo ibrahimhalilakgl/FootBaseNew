@@ -1,4 +1,3 @@
--- Eksik skorları tamamla ve durum alanını boş bırakma
 UPDATE maclar
 SET ev_sahibi_skor = 2,
     deplasman_skor = 1,
@@ -55,7 +54,6 @@ WHERE id = 7
   AND ev_sahibi_skor IS NULL
   AND deplasman_skor IS NULL;
 
--- Durum alanı boş kalan maçlar için varsayılan planlı değeri
 UPDATE maclar
 SET durum = 'PLANLI'
 WHERE durum IS NULL;

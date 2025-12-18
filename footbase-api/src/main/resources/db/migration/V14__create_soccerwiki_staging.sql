@@ -1,4 +1,3 @@
--- Staging tabloları (geçici import için)
 CREATE TABLE IF NOT EXISTS club_staging (
     external_id BIGINT PRIMARY KEY,
     name        TEXT,

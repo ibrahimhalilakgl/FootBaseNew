@@ -1,6 +1,4 @@
--- V17: Örnek maçlar (skor ve logo destekli içerik için)
 
--- Galatasaray - Fenerbahçe (yakında)
 WITH gs AS (SELECT id FROM takimlar WHERE kod = 'GS' LIMIT 1),
      fb AS (SELECT id FROM takimlar WHERE kod = 'FB' LIMIT 1)
 INSERT INTO maclar (ev_sahibi_takim_id, deplasman_takim_id, baslama_tarihi, saha, durum, ev_sahibi_skor, deplasman_skor, olusturma_tarihi, guncelleme_tarihi)
@@ -13,7 +11,6 @@ WHERE gs.id IS NOT NULL AND fb.id IS NOT NULL
           AND m.baslama_tarihi::date = (NOW() + INTERVAL '2 days')::date
   );
 
--- Trabzonspor - Beşiktaş (yakında)
 WITH ts AS (SELECT id FROM takimlar WHERE kod = 'TS' LIMIT 1),
      bjk AS (SELECT id FROM takimlar WHERE kod = 'BJK' LIMIT 1)
 INSERT INTO maclar (ev_sahibi_takim_id, deplasman_takim_id, baslama_tarihi, saha, durum, ev_sahibi_skor, deplasman_skor, olusturma_tarihi, guncelleme_tarihi)
@@ -26,7 +23,6 @@ WHERE ts.id IS NOT NULL AND bjk.id IS NOT NULL
           AND m.baslama_tarihi::date = (NOW() + INTERVAL '3 days')::date
   );
 
--- Beşiktaş - Fenerbahçe (yakında)
 WITH bjk2 AS (SELECT id FROM takimlar WHERE kod = 'BJK' LIMIT 1),
      fb2 AS (SELECT id FROM takimlar WHERE kod = 'FB' LIMIT 1)
 INSERT INTO maclar (ev_sahibi_takim_id, deplasman_takim_id, baslama_tarihi, saha, durum, ev_sahibi_skor, deplasman_skor, olusturma_tarihi, guncelleme_tarihi)

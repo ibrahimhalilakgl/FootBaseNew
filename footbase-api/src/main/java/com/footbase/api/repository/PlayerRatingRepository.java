@@ -5,6 +5,7 @@ import com.footbase.api.domain.PlayerRating;
 import com.footbase.api.domain.UserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -22,5 +23,8 @@ public interface PlayerRatingRepository extends JpaRepository<PlayerRating, Long
     Long countByPlayer(@Param("playerId") Long playerId);
     
     long countByPlayer(Player player);
-}
 
+    @Query("SELECT pr.player.id as playerId, AVG(pr.score) as avgScore, COUNT(pr) as cnt " +
+           "FROM PlayerRating pr GROUP BY pr.player.id ORDER BY avgScore DESC, cnt DESC")
+    List<Object[]> findTopRatedPlayers(Pageable pageable);
+}

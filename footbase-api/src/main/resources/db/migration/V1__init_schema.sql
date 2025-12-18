@@ -69,7 +69,6 @@ CREATE TABLE match_comments (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- seed roles
 INSERT INTO roles (name)
 VALUES ('ROLE_ADMIN'), ('ROLE_MODERATOR'), ('ROLE_USER')
 ON CONFLICT DO NOTHING;

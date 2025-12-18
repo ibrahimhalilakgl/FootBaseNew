@@ -1,4 +1,3 @@
--- Takip sistemi için tablo
 CREATE TABLE IF NOT EXISTS user_follows (
     id BIGSERIAL PRIMARY KEY,
     follower_id BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
@@ -11,7 +10,6 @@ CREATE TABLE IF NOT EXISTS user_follows (
 CREATE INDEX idx_user_follows_follower ON user_follows(follower_id);
 CREATE INDEX idx_user_follows_following ON user_follows(following_id);
 
--- Yorum beğenme sistemi için tablo
 CREATE TABLE IF NOT EXISTS comment_likes (
     id BIGSERIAL PRIMARY KEY,
     comment_id BIGINT NOT NULL REFERENCES match_comments (id) ON DELETE CASCADE,

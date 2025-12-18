@@ -15,6 +15,7 @@ import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
+import Rating from '@mui/material/Rating';
 import { homeAPI } from 'utils/api';
 
 function HomePage() {
@@ -23,6 +24,7 @@ function HomePage() {
   const [comments, setComments] = useState([]);
   const [playerCount, setPlayerCount] = useState(0);
   const [teamCount, setTeamCount] = useState(0);
+  const [topPlayer, setTopPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -36,6 +38,7 @@ function HomePage() {
         setComments(data.comments || []);
         setPlayerCount(data.playerCount || 0);
         setTeamCount(data.teamCount || 0);
+        setTopPlayer(data.topRatedPlayer || null);
       } catch (err) {
         if (mounted) setError('Veri yüklenemedi. Lütfen tekrar deneyin.');
       } finally {
@@ -147,6 +150,41 @@ function HomePage() {
                   </Typography>
                 </CardContent>
               </Card>
+              {topPlayer && (
+                <Card sx={{ background: 'rgba(255,255,255,0.12)', color: theme.palette.common.white }} variant="outlined">
+                  <CardContent>
+                    <Typography variant="overline" sx={{ opacity: 0.8 }}>
+                      En yüksek puanlı oyuncu
+                    </Typography>
+                    <Stack direction="row" spacing={1.5} alignItems="center" mt={1}>
+                      <Avatar
+                        src={topPlayer.imageUrl || undefined}
+                        alt={topPlayer.fullName}
+                        sx={{ width: 48, height: 48 }}
+                      >
+                        {topPlayer.fullName ? topPlayer.fullName[0] : '?'}
+                      </Avatar>
+                      <Stack spacing={0.5}>
+                        <Typography variant="subtitle1" fontWeight="bold">
+                          {topPlayer.fullName}
+                        </Typography>
+                        <Typography variant="body2" sx={{ opacity: 0.8 }}>
+                          {topPlayer.team || 'Takım bilgisi yok'}
+                        </Typography>
+                        <Stack direction="row" spacing={1} alignItems="center">
+                          <Rating value={topPlayer.averageRating || 0} max={10} precision={0.1} readOnly size="small" />
+                          <Typography variant="subtitle2" fontWeight="bold">
+                            {(topPlayer.averageRating || 0).toFixed(1)}
+                          </Typography>
+                          <Typography variant="caption" sx={{ opacity: 0.8 }}>
+                            ({topPlayer.ratingCount || 0})
+                          </Typography>
+                        </Stack>
+                      </Stack>
+                    </Stack>
+                  </CardContent>
+                </Card>
+              )}
             </Stack>
           </Grid>
         </Grid>

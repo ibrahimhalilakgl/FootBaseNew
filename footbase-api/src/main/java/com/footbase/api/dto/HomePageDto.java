@@ -17,6 +17,7 @@ public class HomePageDto {
     private List<SimpleCommentDto> comments;
     private Long playerCount;
     private Long teamCount;
+    private TopPlayerDto topRatedPlayer;
 
     @Data
     @Builder
@@ -44,5 +45,18 @@ public class HomePageDto {
         private String message;
         private Long matchId;
         private Instant createdAt;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TopPlayerDto {
+        private Long id;
+        private String fullName;
+        private String team;
+        private String imageUrl;
+        private Double averageRating;
+        private Long ratingCount;
     }
 }

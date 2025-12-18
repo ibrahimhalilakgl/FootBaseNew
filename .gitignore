@@ -31,6 +31,9 @@ Thumbs.db
 *.log.*
 backend-startup.log
 backend.log
+*.out.log
+frontend.out.log
+frontend.err.log
 
 # Environment variables
 .env
@@ -56,11 +59,20 @@ backend.log
 .springBeans
 .sts4-cache
 
+# Data dumps / imports
+*.csv
+*.xlsx
+*SoccerWiki*.json
+
 # NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
+
+
+
+
 
 

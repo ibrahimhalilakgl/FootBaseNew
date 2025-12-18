@@ -12,6 +12,10 @@ import {
   TextField,
   Button,
   Rating,
+  CardMedia,
+  Chip,
+  Grid,
+  Avatar,
 } from '@mui/material';
 import { playersAPI } from 'utils/api';
 
@@ -88,16 +92,65 @@ function PlayerDetailPage() {
       <Typography variant="h5" gutterBottom>
         Oyuncu Detayı
       </Typography>
-      <Card variant="outlined">
+
+      <Card sx={{ mb: 2 }}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} sm={4} md={3}>
+            {data.imageUrl ? (
+              <CardMedia
+                component="img"
+                image={data.imageUrl}
+                alt={data.fullName}
+                sx={{
+                  height: { xs: 260, sm: 320 },
+                  width: '100%',
+                  objectFit: 'contain',
+                  objectPosition: 'top center',
+                  borderRadius: 1,
+                }}
+              />
+            ) : (
+              <Box py={3} display="flex" justifyContent="center">
+                <Avatar sx={{ width: 120, height: 120, fontSize: 48 }}>
+                  {data.fullName ? data.fullName[0] : '?'}
+                </Avatar>
+              </Box>
+            )}
+          </Grid>
+          <Grid item xs={12} sm={8} md={9}>
+            <CardContent>
+              <Stack spacing={1.5}>
+                <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+                  <Typography variant="h5" fontWeight="bold">
+                    {data.fullName}
+                  </Typography>
+                  {data.team && <Chip label={data.team} color="primary" size="small" />}
+                  {data.position && <Chip label={data.position} variant="outlined" size="small" />}
+                  {data.shirtNumber && <Chip label={`Forma ${data.shirtNumber}`} size="small" />}
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
+                  <Stack spacing={0.5}>
+                    <Typography color="text.secondary">Ortalama Puan</Typography>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <Rating value={data.averageRating || 0} max={10} precision={0.1} readOnly />
+                      <Typography variant="subtitle1" fontWeight="bold">
+                        {(data.averageRating || 0).toFixed(1)}
+                      </Typography>
+                    </Stack>
+                    <Typography variant="body2" color="text.secondary">
+                      {data.ratingCount || 0} değerlendirme
+                    </Typography>
+                  </Stack>
+                </Stack>
+              </Stack>
+            </CardContent>
+          </Grid>
+        </Grid>
+      </Card>
+
+      <Card variant="outlined" sx={{ mb: 2 }}>
         <CardContent>
-          <Stack spacing={1}>
-            <Typography variant="h6">{data.fullName}</Typography>
-            <Typography color="text.secondary">Pozisyon: {data.position || '-'}</Typography>
-            <Typography color="text.secondary">Forma: {data.shirtNumber || '-'}</Typography>
-            <Typography color="text.secondary">Takım: {data.team || '-'}</Typography>
-            <Typography color="text.secondary">Ortalama Puan: {data.averageRating ?? '-'}</Typography>
-            <Typography color="text.secondary">Puanlama Sayısı: {data.ratingCount ?? 0}</Typography>
-            <Divider />
+          <Stack spacing={1.5}>
             <Typography variant="subtitle1">Değerlendirmeler</Typography>
             {(ratings || []).map((r) => (
               <Box key={r.id} pb={1}>
@@ -117,7 +170,13 @@ function PlayerDetailPage() {
             {(ratings || []).length === 0 && (
               <Typography color="text.secondary">Değerlendirme yok</Typography>
             )}
-            <Divider />
+          </Stack>
+        </CardContent>
+      </Card>
+
+      <Card variant="outlined">
+        <CardContent>
+          <Stack spacing={1.5}>
             <Typography variant="subtitle1">Değerlendirme ekle</Typography>
             <Stack direction="row" alignItems="center" spacing={1}>
               <Rating
@@ -147,6 +206,7 @@ function PlayerDetailPage() {
           </Stack>
         </CardContent>
       </Card>
+
       <Box mt={2}>
         <Link to="/app/players">← Oyuncu listesine dön</Link>
       </Box>
@@ -155,4 +215,3 @@ function PlayerDetailPage() {
 }
 
 export default PlayerDetailPage;
-
