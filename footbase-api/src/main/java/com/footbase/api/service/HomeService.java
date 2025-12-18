@@ -2,12 +2,15 @@ package com.footbase.api.service;
 
 import com.footbase.api.domain.MatchComment;
 import com.footbase.api.domain.MatchFixture;
+import com.footbase.api.domain.Player;
 import com.footbase.api.dto.HomePageDto;
 import com.footbase.api.repository.MatchCommentRepository;
 import com.footbase.api.repository.MatchRepository;
 import com.footbase.api.repository.PlayerRepository;
 import com.footbase.api.repository.TeamRepository;
+import com.footbase.api.repository.PlayerRatingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,7 @@ public class HomeService {
     private final MatchCommentRepository matchCommentRepository;
     private final PlayerRepository playerRepository;
     private final TeamRepository teamRepository;
+    private final PlayerRatingRepository playerRatingRepository;
 
     @Transactional(readOnly = true)
     public HomePageDto getHome() {
@@ -32,12 +36,14 @@ public class HomeService {
             upcoming = matchRepository.findTop3ByOrderByKickoffAtAsc();
         }
         List<MatchComment> topComments = matchCommentRepository.findTop3ByOrderByIdDesc();
+        HomePageDto.TopPlayerDto topPlayer = resolveTopPlayer();
 
         return HomePageDto.builder()
                 .upcomingMatches(upcoming.stream().map(this::toMatchDto).collect(Collectors.toList()))
                 .comments(topComments.stream().map(this::toCommentDto).collect(Collectors.toList()))
                 .playerCount(playerRepository.count())
                 .teamCount(teamRepository.count())
+                .topRatedPlayer(topPlayer)
                 .build();
     }
 
@@ -63,5 +69,29 @@ public class HomeService {
                 .matchId(c.getMatch() != null ? c.getMatch().getId() : null)
                 .createdAt(c.getCreatedAt())
                 .build();
+    }
+
+    private HomePageDto.TopPlayerDto resolveTopPlayer() {
+        return playerRatingRepository.findTopRatedPlayers(PageRequest.of(0, 1))
+                .stream()
+                .findFirst()
+                .map(row -> {
+                    Long playerId = (Long) row[0];
+                    Double avgScore = ((Number) row[1]).doubleValue();
+                    Long ratingCount = ((Number) row[2]).longValue();
+                    Player player = playerRepository.findById(playerId).orElse(null);
+                    if (player == null) {
+                        return null;
+                    }
+                    return HomePageDto.TopPlayerDto.builder()
+                            .id(player.getId())
+                            .fullName(player.getFullName())
+                            .team(player.getTeam() != null ? player.getTeam().getName() : null)
+                            .imageUrl(player.getImageUrl())
+                            .averageRating(avgScore)
+                            .ratingCount(ratingCount)
+                            .build();
+                })
+                .orElse(null);
     }
 }
